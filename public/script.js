@@ -1,46 +1,45 @@
 let games = [];
 const addGame = async (e) => {
-    e.preventDefault();
-    const form = document.getElementById("add-edit-game-form");
-    const formData = new FormData(form);
-    formData.append("platform", getGameInfo());
-    let response;
+  e.preventDefault();
+  const form = document.getElementById("add-edit-game-form");
+  const formData = new FormData(form);
+  formData.append("platform", getGameInfo());
+  let response;
 
-    try {
-        if (form._id.value && form._id.value !== "-1") {
-            response = await fetch(`/api/games/${form._id.value}`, {
-                method: "PUT",
-                body: formData,
-            });
-        } else {
-            formData.delete("_id");
-            response = await fetch("/api/games", {
-                method: "POST",
-                body: formData,
-            });
-        }
+  try {
+      if (form._id.value && form._id.value !== "-1") {
+          response = await fetch(`/api/games/${form._id.value}`, {
+              method: "PUT",
+              body: formData,
+          });
+      } else {
+          formData.delete("_id");
+          response = await fetch("/api/games", {
+              method: "POST",
+              body: formData,
+          });
+      }
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-        const data = await response.json();
-        console.log("Data from server:", data);
+      const data = await response.json();
+      console.log("Data from server:", data);
 
-        
-        const updatedGameIndex = games.findIndex((g) => g._id === data._id);
-        if (updatedGameIndex !== -1) {
-            games[updatedGameIndex] = data;
-            console.log("Games Array Updated:", games);
-            showGames();
-        }
+      const updatedGameIndex = games.findIndex((g) => g._id === data._id);
+      if (updatedGameIndex !== -1) {
+          games[updatedGameIndex] = data;
+          console.log("Games Array Updated:", games);
+          showGames();
+      }
+  } catch (error) {
+      console.error("Error:", error);
+  }
 
-    } catch (error) {
-        console.error("Error:", error);
-    }
-
-    document.querySelector(".form-class").classList.add("transparent");
-    showGames();
+  document.querySelector(".form-class").classList.add("transparent");
+  showGames();
+  reloadPage();
 };
 
   
@@ -171,46 +170,48 @@ const populateInfo = (game) => {
 }
 
 
-const addEditGame = async(e) => {
-    e.preventDefault();
-    const form = document.getElementById("add-edit-game-form");
-    const formData = new FormData(form);
-    let response;
-    formData.append("infos", getGameInfo());
+const addEditGame = async (e) => {
+  e.preventDefault();
+  const form = document.getElementById("add-edit-game-form");
+  const formData = new FormData(form);
+  let response;
+  formData.append("infos", getGameInfo());
 
-    if (form._id.value == -1) {
-        formData.delete("_id");
+  if (form._id.value == -1) {
+      formData.delete("_id");
 
-        response = await fetch("/api/games", {
-            method: "POST",
-            body: formData
-        });
-    }
-    else {
+      response = await fetch("/api/games", {
+          method: "POST",
+          body: formData,
+      });
+  } else {
+      console.log(...formData);
 
-        console.log(...formData);
+      response = await fetch(`/api/games/${form._id.value}`, {
+          method: "PUT",
+          body: formData,
+      });
+  }
 
-        response = await fetch(`/api/games/${form._id.value}`, {
-            method: "PUT",
-            body: formData
-        });
-    }
+  if (response.status != 200) {
+      console.log("Error posting data");
+  }
 
-    if (response.status != 200) {
-        console.log("Error posting data");
-    }
+  recipe = await response.json();
 
-    recipe = await response.json();
+  if (form._id.value != -1) {
+      displayGameDetails(game);
+  }
 
-    if (form._id.value != -1) {
-        displayGameDetails(game);
-    }
-
-    resetForm();
-    document.querySelector("add-section").classList.add("transparent");
-    showGames();
+  resetForm();
+  document.querySelector("add-section").classList.add("transparent");
+  showGames();
+  reloadPage();
 };
 
+const reloadPage = () => {
+  location.reload();
+};
 
   const deleteGame = async(game) => {
     let response = await fetch(`/api/games/${game._id}`, {
