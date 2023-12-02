@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+    <title>Assignment 17</title>
+</head>
+
+<body>
+    <h1>Video Games</h1>
+    <h2 id="add-game-intro"><Strong>Add Game</Strong></h2>
+    <div id="flex-container">
+        <div class="columns">
+            <section id="game-col"></section>
+            <div id="game-details">
+
+            </div>
+        </div>
+
+        <section id="add-section">
+            <h3 id="add-games"><u>Adding Game</u></h3>
+            <form id="add-edit-game-form" method="post" class="form-class">
+                <input type="hidden" name="_id" value="-1" />
+                <p>
+                    <label for="name">Game Name:</label>
+                    <input type="text" id="name" name="name" required />
+                </p>
+                <p>
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required />
+                </p>
+                <p>
+                    <label for="platform">Platform:</label>
+                    <input type="text" id="platform" name="platform" required />
+                </p>
+                <p>
+                    <label for="publisher">Publisher:</label>
+                    <input type="text" id="publisher" name="publisher" required />
+                </p>
+                <p>
+                    <label for="img">Upload Image:</label>
+                    <input type="file" id="img" name="img" />
+                </p>
+
+                <p id="games-added">
+                    <label class="inline">Other Game Info:</label>
+                    <a href="#" id="add-game-link">Add Info</a>
+                <section id="game-boxes">
+
+                </section>
+                </p>
+                <p>
+                    <button type="submit">Submit</button>
+                </p>
+            </form>
+        </section>
+
+    </div>
+</body>
+
+</html>
